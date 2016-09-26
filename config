@@ -1,0 +1,5 @@
+[db]
+category = book
+img_num = 20
+threads = 1
+save = "./img"
