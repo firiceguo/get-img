@@ -2,7 +2,11 @@
 
 This project aim to get images from internet.
 
-This project is still a demo with countless bugs. It's very welcome to give me pull requests and become a countributor of this project. 
+It's huge welcome to:
+
+- give me pull requests and become a countributor of this project
+
+- raising issues to me.
 
 ## What you could do
 
