@@ -16,3 +16,14 @@ There are some options you can configure.
 
 - save: The route you want to save the pictures.
 
+## Required libraries
+
+- [selenium](https://github.com/SeleniumHQ/selenium)
+
+## Test OS
+
+Windows 10 64-bit
+Python 2.7.12
+
+selenium 2.52.0
+Firefox 46.0.1

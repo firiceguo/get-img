@@ -1,5 +1,5 @@
 [db]
-category = book
+category = cat,bird
 img_num = 20
 threads = 1
-save = "./img"
+save = ./img
