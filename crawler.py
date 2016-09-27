@@ -1,30 +1,49 @@
 # -*- coding: utf-8 -*-
 
-import ConfigParser
-import os
-import urllib2
-import requests
-import hashlib
+from selenium import webdriver
+import time
 import urllib
-import lxml.html as HTML
 
-# config the objects you want to get
-category = ["book", "bird"]
+# 爬取页面地址
+url = 'http://pic.sogou.com/pics?query=birds&w=05009900&p=&_asf=pic.sogou.com&_ast=1474957566&sc=index&sut=1709&sst0=1474957566200'
 
-# read the config file
-cf = ConfigParser.ConfigParser()
-cf.read("config")
+# 目标元素的xpath
+xpath = '//div[@id="imgid"]/ul/li/a/img'
 
-category = ["book"]
-img_num = cf.getint("db", "img_num")
-threads = cf.getint("db", "threads")
-save = cf.get("db", "save")
+# 启动Firefox浏览器
+fp = webdriver.FirefoxProfile()
+driver = webdriver.Firefox(firefox_profile=fp)
 
-# get the url
-session = requests.Session()
-headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)AppleWebKit 537.36 (KHTML, like Gecko) Chrome",
-           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"}
-for item in category:
-    url = "http://rvc.ust.hk/mgmt/media.aspx?path=16FA_CSIT5210-L1_160922_44793"
-    req = session.get(url, headers=headers)
-    print req.text
+# 最大化窗口，因为每一次爬取只能看到视窗内的图片
+driver.maximize_window()
+
+# 记录下载过的图片地址，避免重复下载
+img_url_dic = {}
+
+# 浏览器打开爬取页面
+driver.get(url)
+
+# 模拟滚动窗口以浏览下载更多图片
+pos = 0
+m = 0  # 图片编号
+for i in range(10):
+    pos += i*500  # 每次下滚500
+    js = "document.documentElement.scrollTop=%d" % pos
+    driver.execute_script(js)
+    time.sleep(1)
+
+    for element in driver.find_elements_by_xpath(xpath):
+        img_url = element.get_attribute('src')
+        print img_url
+        # 保存图片到指定路径
+        if img_url is not None and img_url not in img_url_dic:
+            img_url_dic[img_url] = ''
+            m += 1
+            ext = img_url.split('/')[-1]
+            filename = str(m) + '.' + ext + '.png'
+            # 保存图片数据
+            data = urllib.urlopen(img_url).read()
+            f = open('./img/' + filename, 'wb')
+            f.write(data)
+            f.close()
+driver.close()
