@@ -18,32 +18,32 @@ threads = cf.getint("db", "threads")
 
 def crawler(obj):
 
-    # 目标元素的xpath
+    # the xpath of object element
     xpath = '//div[@id="imgid"]/ul/li/a/img'
 
-    # 启动Firefox浏览器
+    # launch Firefox
     fp = webdriver.FirefoxProfile()
     driver = webdriver.Firefox(firefox_profile=fp)
 
-    # 最大化窗口，因为每一次爬取只能看到视窗内的图片
+    # maximize window, because it can only get the images in view during eatch catch
     driver.maximize_window()
 
-    # 记录下载过的图片地址，避免重复下载
+    # record the img url
     img_url_dic = {}
 
     for x in xrange(len(obj)):
-        # 爬取页面地址
+        # the aim url
         url = 'http://pic.sogou.com/pics?query='+obj[x]+'&w=05009900&p=&_asf=pic.sogou.com&_ast=1474957566&sc=index&sut=1709&sst0=1474957566200'
 
-        # 浏览器打开爬取页面
+        # open the url using established webdriver
         driver.get(url)
 
-        # 模拟滚动窗口以浏览下载更多图片
+        # Simulation of rolling web page to download more images
         pos = 0
-        m = 0  # 图片编号
+        m = 0  # pic's record number
         i = 0
         while m < img_num:
-            pos += i*500  # 每次下滚500
+            pos += i*500  # Scroll down 500
             i += 1
             js = "document.documentElement.scrollTop=%d" % pos
             driver.execute_script(js)
@@ -53,12 +53,14 @@ def crawler(obj):
                 if m > img_num - 1:
                     break
                 img_url = element.get_attribute('src')
-                # 保存图片到指定路径
+
+                # save pictures
                 if img_url is not None and img_url not in img_url_dic:
                     img_url_dic[img_url] = ''
                     m += 1
                     filename = str(m) + '-' + obj[x] + '.png'
-                    # 保存图片数据
+
+                    # get pictures and put them in dic
                     data = urllib.urlopen(img_url).read()
                     dic = save + '/' + obj[x] + '/'
                     if not os.path.exists(dic):
@@ -66,9 +68,11 @@ def crawler(obj):
                     f = open(dic + filename, 'wb')
                     f.write(data)
                     f.close()
+
     driver.close()
 
-thr = []
+
+# assign each threads' workload
 if threads > len(category):
     threads = len(category)
 num = len(category) / threads
@@ -82,6 +86,8 @@ for i in xrange(threads):
         thrCategory[i].append(category[x:x+1])
         x += 1
 
+# establish threads
+thr = []
 for i in xrange(threads):
     t = threading.Thread(target=crawler, args=(thrCategory[i],))
     thr.append(t)
