@@ -23,7 +23,9 @@ There are some options you can configure.
 ## Test OS
 
 Windows 10 64-bit
+
 Python 2.7.12
 
 selenium 2.52.0
+
 Firefox 46.0.1
