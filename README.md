@@ -20,6 +20,8 @@ There are some options you can configure.
 
 - save: The route you want to save the pictures.
 
+- threads: The number of threads you want to use.
+
 ## Required libraries
 
 - [selenium](https://github.com/SeleniumHQ/selenium)
