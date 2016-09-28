@@ -34,4 +34,4 @@ selenium 2.52.0
 
 Firefox 46.0.1
 
-Note: Because there still exist [bugs](https://github.com/SeleniumHQ/selenium/issues/2645) for Firefox 47 and above version, please use [Firefox 46.0.1](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/) to avoid the bug.
+Note: Because there still exist [bugs](https://github.com/SeleniumHQ/selenium/issues/2645) for Firefox 47 and above version, please use [Firefox 46.0.1](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/) and colse the auto update in the `about:config` to avoid the bug.
