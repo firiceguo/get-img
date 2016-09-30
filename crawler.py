@@ -21,9 +21,8 @@ def crawler(obj):
     # the xpath of object element
     xpath = '//div[@id="imgid"]/ul/li/a/img'
 
-    # launch Firefox
-    fp = webdriver.FirefoxProfile()
-    driver = webdriver.Firefox(firefox_profile=fp)
+    # launch PhantomJS
+    driver = webdriver.PhantomJS()
 
     # maximize window, because it can only get the images in view during eatch catch
     driver.maximize_window()
@@ -59,6 +58,7 @@ def crawler(obj):
                     img_url_dic[img_url] = ''
                     m += 1
                     filename = str(m) + '-' + obj[x] + '.png'
+                    print "saving %s" % (filename)
 
                     # get pictures and put them in dic
                     data = urllib.urlopen(img_url).read()
@@ -92,3 +92,5 @@ for i in xrange(threads):
     t = threading.Thread(target=crawler, args=(thrCategory[i],))
     thr.append(t)
     t.start()
+
+os.remove("ghostdriver.log")
